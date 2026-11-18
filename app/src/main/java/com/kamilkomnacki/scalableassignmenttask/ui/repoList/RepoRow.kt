@@ -89,13 +89,13 @@ private fun RepoRowDetails(repo: Repo) {
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            RepoRowStars(repo)
+            RepoRowStars(stars = repo.stars)
         }
     }
 }
 
 @Composable
-private fun RepoRowStars(repo: Repo) {
+private fun RepoRowStars(stars: Int) {
     Icon(
         painter = painterResource(android.R.drawable.star_big_on),
         contentDescription = null,
@@ -103,7 +103,7 @@ private fun RepoRowStars(repo: Repo) {
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     Text(
-        text = repo.stars.toString(),
+        text = stars.toString(),
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
