@@ -125,6 +125,8 @@ private fun RepoCommitsErrorPanel(
             text = stringResource(
                 when (uiState.error) {
                     RepoCommitsError.Network -> R.string.network_failure
+                    RepoCommitsError.RateLimited -> R.string.rate_limit_failure
+                    RepoCommitsError.TokenRejected -> R.string.token_rejected
                     RepoCommitsError.Generic -> R.string.commits_failure
                 },
             ),

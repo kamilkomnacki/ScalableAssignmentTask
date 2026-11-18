@@ -13,5 +13,7 @@ sealed interface RepoListUiState {
 
 enum class RepoListError {
     Network,
+    RateLimited,
+    TokenRejected,
     Generic,
 }

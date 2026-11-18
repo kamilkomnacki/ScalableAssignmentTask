@@ -40,6 +40,8 @@ class RepoCommitsViewModel(
 
 private fun GitHubFailure.toRepoCommitsError(): RepoCommitsError = when (this) {
     is GitHubFailure.Network -> RepoCommitsError.Network
+    is GitHubFailure.RateLimited -> RepoCommitsError.RateLimited
+    is GitHubFailure.TokenRejected -> RepoCommitsError.TokenRejected
     is GitHubFailure.Unavailable,
     is GitHubFailure.InvalidResponse -> RepoCommitsError.Generic
 }

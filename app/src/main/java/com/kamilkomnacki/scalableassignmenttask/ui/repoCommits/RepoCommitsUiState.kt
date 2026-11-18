@@ -13,5 +13,7 @@ sealed interface RepoCommitsUiState {
 
 enum class RepoCommitsError {
     Network,
+    RateLimited,
+    TokenRejected,
     Generic,
 }

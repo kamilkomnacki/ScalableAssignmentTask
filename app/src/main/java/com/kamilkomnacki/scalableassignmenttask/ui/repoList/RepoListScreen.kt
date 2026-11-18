@@ -74,6 +74,8 @@ fun RepoListScreen(
                         text = stringResource(
                             when (uiState.error) {
                                 RepoListError.Network -> R.string.network_failure
+                                RepoListError.RateLimited -> R.string.rate_limit_failure
+                                RepoListError.TokenRejected -> R.string.token_rejected
                                 RepoListError.Generic -> R.string.repo_list_failure
                             },
                         ),

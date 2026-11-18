@@ -29,6 +29,8 @@ class RepoCommitsPreviewParameterProvider : PreviewParameterProvider<RepoCommits
         RepoCommitsUiState.Success(commits = persistentListOf()),
         RepoCommitsUiState.Error(error = RepoCommitsError.Generic),
         RepoCommitsUiState.Error(error = RepoCommitsError.Network),
+        RepoCommitsUiState.Error(error = RepoCommitsError.RateLimited),
+        RepoCommitsUiState.Error(error = RepoCommitsError.TokenRejected),
         RepoCommitsUiState.Loading,
     )
 

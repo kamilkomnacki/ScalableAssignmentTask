@@ -6,6 +6,8 @@ import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
 import com.kamilkomnacki.scalableassignmenttask.data.remote.GitHubApi
 import java.io.IOException
 import java.net.HttpURLConnection.HTTP_CONFLICT
+import java.net.HttpURLConnection.HTTP_FORBIDDEN
+import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import retrofit2.Response
 
 class GitHubRepository(
@@ -14,10 +16,6 @@ class GitHubRepository(
 ) {
     suspend fun getRepos(): List<Repo> {
         val response = request { api.getRepos(account) }
-
-        if (!response.isSuccessful) {
-            throw GitHubFailure.Unavailable()
-        }
 
         return response.items { repo -> repo.toRepo() }
     }
@@ -29,23 +27,31 @@ class GitHubRepository(
         if (response.code() == HTTP_CONFLICT) {
             return emptyList()
         }
-        if (!response.isSuccessful) {
-            throw GitHubFailure.Unavailable()
-        }
-
         return response.items { commitResponse -> commitResponse.toRepoCommit() }
     }
 
     private suspend fun <T> request(call: suspend () -> Response<T>): Response<T> = try {
-        call()
+        call().also { response ->
+            when {
+                response.code() == HTTP_UNAUTHORIZED -> throw GitHubFailure.TokenRejected()
+                response.code() == 429 ||
+                    (response.code() == HTTP_FORBIDDEN &&
+                        (response.headers()["X-RateLimit-Remaining"] == "0" ||
+                            response.headers()["Retry-After"] != null)) -> throw GitHubFailure.RateLimited()
+            }
+        }
     } catch (e: IOException) {
         throw GitHubFailure.Network(e)
     } catch (e: JsonParseException) {
         invalidResponse(e)
     }
 
-    private fun <T, R> Response<List<T?>>.items(map: (T) -> R): List<R> =
-        body()
+    private fun <T, R> Response<List<T?>>.items(map: (T) -> R): List<R> {
+        if (!isSuccessful) {
+            throw GitHubFailure.Unavailable()
+        }
+        return body()
             ?.map { item -> item?.let(map) ?: invalidResponse() }
             ?: invalidResponse()
+    }
 }

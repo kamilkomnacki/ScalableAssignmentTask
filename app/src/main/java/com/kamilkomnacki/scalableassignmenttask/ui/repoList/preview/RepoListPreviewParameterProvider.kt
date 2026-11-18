@@ -36,6 +36,8 @@ class RepoListPreviewParameterProvider : PreviewParameterProvider<RepoListUiStat
         RepoListUiState.Success(repositories = persistentListOf()),
         RepoListUiState.Error(error = RepoListError.Generic),
         RepoListUiState.Error(error = RepoListError.Network),
+        RepoListUiState.Error(error = RepoListError.RateLimited),
+        RepoListUiState.Error(error = RepoListError.TokenRejected),
         RepoListUiState.Loading,
     )
 

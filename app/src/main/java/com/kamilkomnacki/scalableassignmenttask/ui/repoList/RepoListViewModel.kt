@@ -39,6 +39,8 @@ class RepoListViewModel(
 
 private fun GitHubFailure.toRepoListError(): RepoListError = when (this) {
     is GitHubFailure.Network -> RepoListError.Network
+    is GitHubFailure.RateLimited -> RepoListError.RateLimited
+    is GitHubFailure.TokenRejected -> RepoListError.TokenRejected
     is GitHubFailure.Unavailable,
     is GitHubFailure.InvalidResponse -> RepoListError.Generic
 }
