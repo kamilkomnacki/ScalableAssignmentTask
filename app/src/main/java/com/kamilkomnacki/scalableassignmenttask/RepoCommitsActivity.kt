@@ -5,12 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
 import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsScreen
+import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsViewModel
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableColors
 
 class RepoCommitsActivity : ComponentActivity() {
+    private val viewModel: RepoCommitsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repositoryName = requireNotNull(
@@ -23,7 +29,9 @@ class RepoCommitsActivity : ComponentActivity() {
         )
         setContent {
             ScalableAssignmentTaskTheme {
+                val uiState by viewModel.uiState.collectAsState()
                 RepoCommitsScreen(
+                    uiState = uiState,
                     repositoryName = repositoryName,
                     onBack = { onBackPressedDispatcher.onBackPressed() },
                 )
