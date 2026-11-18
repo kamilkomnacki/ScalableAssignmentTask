@@ -20,9 +20,11 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
 import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
+import com.kamilkomnacki.scalableassignmenttask.ui.repoList.preview.RepoRowPreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 
 @Composable
@@ -108,16 +110,12 @@ private fun RepoRowStars(repo: Repo) {
 
 @Preview(showBackground = true, widthDp = 360)
 @Composable
-private fun RepoRowPreview() {
+private fun RepoRowPreview(
+    @PreviewParameter(RepoRowPreviewParameterProvider::class) repo: Repo,
+) {
     ScalableAssignmentTaskTheme {
         RepoRow(
-            repo = Repo(
-                id = 1L,
-                name = "ScalableAssignmentTask",
-                description = "An Android app for browsing GitHub repositories and commits.",
-                technology = "Kotlin",
-                stars = 42,
-            ),
+            repo = repo,
             onClick = {},
         )
     }

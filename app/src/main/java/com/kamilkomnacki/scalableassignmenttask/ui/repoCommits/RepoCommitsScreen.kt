@@ -26,12 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
-import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
+import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.preview.RepoCommitsPreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
-import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,66 +138,13 @@ private fun RepoCommitsErrorPanel(
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 720)
 @Composable
-private fun RepoCommitsScreenPreview() {
+private fun RepoCommitsScreenPreview(
+    @PreviewParameter(RepoCommitsPreviewParameterProvider::class) uiState: RepoCommitsUiState,
+) {
     ScalableAssignmentTaskTheme {
         RepoCommitsScreen(
-            uiState = RepoCommitsUiState.Success(
-                commits = persistentListOf(
-                    RepoCommit(
-                        sha = "0123456789abcdef0123456789abcdef01234567",
-                        title = "Add repository commit details",
-                        author = "Kamil Komnacki",
-                        date = LocalDate.of(2026, 11, 18),
-                    ),
-                    RepoCommit(
-                        sha = "89abcdef0123456789abcdef0123456789abcdef",
-                        title = "Display commit details with a very long title that should be " +
-                            "limited to two lines and truncated with an ellipsis",
-                        author = null,
-                        date = LocalDate.of(2026, 11, 17),
-                    ),
-                ),
-            ),
-            repositoryName = "ScalableAssignmentTask",
-            onBack = {},
-            onRetryClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 720)
-@Composable
-private fun RepoCommitsScreenEmptyPreview() {
-    ScalableAssignmentTaskTheme {
-        RepoCommitsScreen(
-            uiState = RepoCommitsUiState.Success(commits = persistentListOf()),
-            repositoryName = "ScalableAssignmentTask",
-            onBack = {},
-            onRetryClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 720)
-@Composable
-private fun RepoCommitsScreenErrorPreview() {
-    ScalableAssignmentTaskTheme {
-        RepoCommitsScreen(
-            uiState = RepoCommitsUiState.Error(error = RepoCommitsError.Generic),
-            repositoryName = "ScalableAssignmentTask",
-            onBack = {},
-            onRetryClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 720)
-@Composable
-private fun RepoCommitsScreenLoadingPreview() {
-    ScalableAssignmentTaskTheme {
-        RepoCommitsScreen(
-            uiState = RepoCommitsUiState.Loading,
-            repositoryName = "ScalableAssignmentTask",
+            uiState = uiState,
+            repositoryName = RepoCommitsPreviewParameterProvider.REPOSITORY_NAME,
             onBack = {},
             onRetryClick = {},
         )
