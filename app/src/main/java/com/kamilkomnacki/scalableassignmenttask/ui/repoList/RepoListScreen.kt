@@ -1,44 +1,109 @@
 package com.kamilkomnacki.scalableassignmenttask.ui.repoList
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kamilkomnacki.scalableassignmenttask.R
+import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
+import kotlinx.collections.immutable.persistentListOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepoListScreen(
     uiState: RepoListUiState,
+    account: String,
     modifier: Modifier = Modifier,
-    onRepoClick: (RepoUiModel) -> Unit = {},
+    onRepoClick: (Repo) -> Unit = {},
+    onRetryClick: () -> Unit = {},
 ) {
-    Surface(
+    Scaffold(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        LazyColumn(
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.repo_list_title, account),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                ),
+            )
+        },
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center,
         ) {
-            items(
-                items = uiState.repositories,
-                key = { repo -> repo.id },
-            ) { repo ->
-                RepoRow(
-                    repo = repo,
-                    onClick = { onRepoClick(repo) },
-                )
+            when (uiState) {
+                RepoListUiState.Loading -> CircularProgressIndicator()
+                is RepoListUiState.Error -> Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Text(
+                        text = stringResource(
+                            when (uiState.error) {
+                                RepoListError.Network -> R.string.network_failure
+                                RepoListError.Generic -> R.string.repo_list_failure
+                            },
+                        ),
+                        textAlign = TextAlign.Center,
+                    )
+                    Button(onClick = onRetryClick) {
+                        Text(stringResource(R.string.retry))
+                    }
+                }
+                is RepoListUiState.Success -> if (uiState.repositories.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.no_public_repos),
+                        modifier = Modifier.padding(16.dp),
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        items(
+                            items = uiState.repositories,
+                            key = { repo -> repo.id },
+                        ) { repo ->
+                            RepoRow(
+                                repo = repo,
+                                onClick = { onRepoClick(repo) },
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -49,37 +114,54 @@ fun RepoListScreen(
 private fun RepoListScreenPreview() {
     ScalableAssignmentTaskTheme {
         RepoListScreen(
-            uiState = RepoListUiState(
-                repositories = listOf(
-                    RepoUiModel(
+            account = "_user_account_",
+            uiState = RepoListUiState.Success(
+                repositories = persistentListOf(
+                    Repo(
                         id = 1L,
                         name = "kotlin",
-                        owner = "JetBrains",
                         description = "The Kotlin programming language.",
                         technology = "Kotlin",
                         stars = 1200,
-                        defaultBranch = "master",
                     ),
-                    RepoUiModel(
+                    Repo(
                         id = 2L,
                         name = "kotlinx.coroutines",
-                        owner = "Kotlin",
                         description = "Support for asynchronous programming with Kotlin coroutines.",
                         technology = "Kotlin",
                         stars = 850,
-                        defaultBranch = "master",
                     ),
-                    RepoUiModel(
+                    Repo(
                         id = 3L,
                         name = "android-notes",
-                        owner = "kamilkomnacki",
                         description = null,
                         technology = null,
                         stars = 0,
-                        defaultBranch = "main",
                     ),
                 ),
             ),
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360, heightDp = 720)
+@Composable
+private fun RepoListScreenErrorPreview() {
+    ScalableAssignmentTaskTheme {
+        RepoListScreen(
+            account = "_user_account_",
+            uiState = RepoListUiState.Error(error = RepoListError.Generic),
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360, heightDp = 720)
+@Composable
+private fun RepoListScreenLoadingPreview() {
+    ScalableAssignmentTaskTheme {
+        RepoListScreen(
+            account = "_user_account_",
+            uiState = RepoListUiState.Loading,
         )
     }
 }

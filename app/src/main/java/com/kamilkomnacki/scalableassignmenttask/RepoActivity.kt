@@ -10,13 +10,21 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.kamilkomnacki.scalableassignmenttask.ui.repoList.RepoListScreen
 import com.kamilkomnacki.scalableassignmenttask.ui.repoList.RepoListViewModel
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableColors
 
 class RepoActivity : ComponentActivity() {
-    private val viewModel: RepoListViewModel by viewModels()
+    private val viewModel: RepoListViewModel by viewModels {
+        viewModelFactory {
+            initializer {
+                RepoListViewModel((application as ScalableApplication).gitHubRepository)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +37,14 @@ class RepoActivity : ComponentActivity() {
                 val uiState by viewModel.uiState.collectAsState()
                 RepoListScreen(
                     uiState = uiState,
-                    onRepoClick = {
-                        startActivity(Intent(this, RepoCommitsActivity::class.java))
+                    account = ScalableApplication.ACCOUNT,
+                    onRepoClick = { repo ->
+                        startActivity(
+                            Intent(this, RepoCommitsActivity::class.java)
+                                .putExtra(RepoCommitsActivity.EXTRA_REPOSITORY_NAME, repo.name),
+                        )
                     },
+                    onRetryClick = viewModel::loadRepositories,
                 )
             }
         }

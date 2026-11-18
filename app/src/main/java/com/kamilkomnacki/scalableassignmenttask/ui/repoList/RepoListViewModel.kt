@@ -1,69 +1,44 @@
 package com.kamilkomnacki.scalableassignmenttask.ui.repoList
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kamilkomnacki.scalableassignmenttask.data.GitHubFailure
+import com.kamilkomnacki.scalableassignmenttask.data.GitHubRepository
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class RepoListViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(
-        RepoListUiState(
-            repositories = listOf(
-                RepoUiModel(
-                    id = 1L,
-                    name = "kotlin",
-                    owner = "JetBrains",
-                    description = "The Kotlin programming language.",
-                    technology = "Kotlin",
-                    stars = 1200,
-                    defaultBranch = "master",
-                ),
-                RepoUiModel(
-                    id = 2L,
-                    name = "kotlinx.coroutines",
-                    owner = "Kotlin",
-                    description = "Support for asynchronous programming with Kotlin coroutines.",
-                    technology = "Kotlin",
-                    stars = 850,
-                    defaultBranch = "master",
-                ),
-                RepoUiModel(
-                    id = 3L,
-                    name = "compose-samples",
-                    owner = "android",
-                    description = "Sample Android apps built with Jetpack Compose.",
-                    technology = "Kotlin",
-                    stars = 640,
-                    defaultBranch = "main",
-                ),
-                RepoUiModel(
-                    id = 4L,
-                    name = "sqldelight",
-                    owner = "sqldelight",
-                    description = "Generate Kotlin APIs from SQL statements.",
-                    technology = "Kotlin",
-                    stars = 420,
-                    defaultBranch = "master",
-                ),
-                RepoUiModel(
-                    id = 5L,
-                    name = "okhttp",
-                    owner = "square",
-                    description = "An HTTP client for Android and the JVM.",
-                    technology = "Java",
-                    stars = 980,
-                    defaultBranch = "master",
-                ),
-                RepoUiModel(
-                    id = 6L,
-                    name = "android-notes",
-                    owner = "kamilkomnacki",
-                    description = null,
-                    technology = null,
-                    stars = 0,
-                    defaultBranch = "main",
-                ),
-            ),
-        ),
-    )
-    val uiState = _uiState.asStateFlow()
+class RepoListViewModel(
+    private val repository: GitHubRepository,
+) : ViewModel() {
+    private val _uiState = MutableStateFlow<RepoListUiState>(RepoListUiState.Loading)
+    val uiState: StateFlow<RepoListUiState> = _uiState.asStateFlow()
+
+    private var loadJob: Job? = null
+
+    init {
+        loadRepositories()
+    }
+
+    fun loadRepositories() {
+        if (loadJob?.isActive == true) return
+        _uiState.value = RepoListUiState.Loading
+
+        loadJob = viewModelScope.launch {
+            _uiState.value = try {
+                RepoListUiState.Success(repository.getRepos().toImmutableList())
+            } catch (failure: GitHubFailure) {
+                RepoListUiState.Error(failure.toRepoListError())
+            }
+        }
+    }
+}
+
+private fun GitHubFailure.toRepoListError(): RepoListError = when (this) {
+    is GitHubFailure.Network -> RepoListError.Network
+    is GitHubFailure.Unavailable,
+    is GitHubFailure.InvalidResponse -> RepoListError.Generic
 }

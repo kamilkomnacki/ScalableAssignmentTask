@@ -23,11 +23,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
+import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 
 @Composable
 fun RepoRow(
-    repo: RepoUiModel,
+    repo: Repo,
     onClick: () -> Unit
 ) {
     Surface(
@@ -62,7 +63,7 @@ fun RepoRow(
 }
 
 @Composable
-private fun RepoRowDetails(repo: RepoUiModel) {
+private fun RepoRowDetails(repo: Repo) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
@@ -91,7 +92,7 @@ private fun RepoRowDetails(repo: RepoUiModel) {
 }
 
 @Composable
-private fun RepoRowStars(repo: RepoUiModel) {
+private fun RepoRowStars(repo: Repo) {
     Icon(
         painter = painterResource(android.R.drawable.star_big_on),
         contentDescription = null,
@@ -109,14 +110,12 @@ private fun RepoRowStars(repo: RepoUiModel) {
 private fun RepoRowPreview() {
     ScalableAssignmentTaskTheme {
         RepoRow(
-            repo = RepoUiModel(
+            repo = Repo(
                 id = 1L,
                 name = "ScalableAssignmentTask",
-                owner = "kamilkomnacki",
                 description = "An Android app for browsing GitHub repositories and commits.",
                 technology = "Kotlin",
                 stars = 42,
-                defaultBranch = "main",
             ),
             onClick = {},
         )

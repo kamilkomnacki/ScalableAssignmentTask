@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Scalable Capital Android Developer Assignment</string>
-    <string name="repo_list_title">%1$s / Repositories</string>
+    <string name="repo_list_title">Repositories of %1$s</string>
+    <string name="repo_commits_title_with_name">Commits of %1$s repository</string>
     <plurals name="repo_stars">
         <item quantity="one">%1$d star</item>
         <item quantity="other">%1$d stars</item>
@@ -9,7 +10,6 @@
     <string name="retry">Retry</string>
     <string name="back">Back</string>
     <string name="no_commits">No commits in this repository.</string>
-    <string name="default_branch_only">Default branch only: %1$s</string>
     <string name="unknown_author">Unknown author</string>
     <string name="commit_metadata">%1$s · %2$s</string>
     <string name="waiting_for_completed_month">Keep scrolling through commits to complete a month and display the chart.</string>
