@@ -42,10 +42,10 @@ private const val FOOTER_KEY = "footer"
 fun RepoListScreen(
     uiState: RepoListUiState,
     account: String,
+    onRepoClick: (Repo) -> Unit,
+    onRetryClick: () -> Unit,
     onItemVisible: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    onRepoClick: (Repo) -> Unit = {},
-    onRetryClick: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -153,6 +153,8 @@ private fun RepoListScreenPreview(
         RepoListScreen(
             account = RepoListPreviewParameterProvider.ACCOUNT,
             uiState = uiState,
+            onRepoClick = {},
+            onRetryClick = {},
             onItemVisible = {},
         )
     }
