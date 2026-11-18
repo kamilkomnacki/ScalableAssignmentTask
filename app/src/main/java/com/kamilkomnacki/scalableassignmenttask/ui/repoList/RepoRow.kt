@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,7 +43,9 @@ fun RepoRow(
         ) {
             Text(
                 text = repo.name,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             repo.description?.let { description ->
                 Text(
@@ -63,16 +64,19 @@ fun RepoRow(
 @Composable
 private fun RepoRowDetails(repo: RepoUiModel) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         repo.technology?.let { language ->
             Text(
                 text = language,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
-        Spacer(Modifier.weight(1f))
         val starsDescription = pluralStringResource(R.plurals.repo_stars, repo.stars, repo.stars)
         Row(
             modifier = Modifier.clearAndSetSemantics {
