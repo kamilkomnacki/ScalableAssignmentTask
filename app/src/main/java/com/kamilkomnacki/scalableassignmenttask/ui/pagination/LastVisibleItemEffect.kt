@@ -1,4 +1,4 @@
-package com.kamilkomnacki.scalableassignmenttask.pagination
+package com.kamilkomnacki.scalableassignmenttask.ui.pagination
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable

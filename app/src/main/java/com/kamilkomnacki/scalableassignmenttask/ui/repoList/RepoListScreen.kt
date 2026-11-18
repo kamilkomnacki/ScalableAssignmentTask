@@ -28,10 +28,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
 import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
-import com.kamilkomnacki.scalableassignmenttask.pagination.LastVisibleItemEffect
-import com.kamilkomnacki.scalableassignmenttask.pagination.ListFooter
 import com.kamilkomnacki.scalableassignmenttask.ui.components.ErrorWithRetry
 import com.kamilkomnacki.scalableassignmenttask.ui.components.LoadingFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.LastVisibleItemEffect
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.ListFooter
 import com.kamilkomnacki.scalableassignmenttask.ui.repoList.preview.RepoListPreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 

@@ -2,7 +2,7 @@ package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
-import com.kamilkomnacki.scalableassignmenttask.pagination.ListFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.ListFooter
 import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsError
 import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsUiState
 import java.time.LocalDate

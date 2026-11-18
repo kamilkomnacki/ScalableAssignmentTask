@@ -1,6 +1,7 @@
-package com.kamilkomnacki.scalableassignmenttask.pagination
+package com.kamilkomnacki.scalableassignmenttask.ui.pagination
 
 import androidx.compose.runtime.Immutable
+import com.kamilkomnacki.scalableassignmenttask.pagination.LoadStatus
 
 /** What a list shows after its loaded items; [E] is the screen's error enum. */
 @Immutable

@@ -2,7 +2,7 @@ package com.kamilkomnacki.scalableassignmenttask.ui.repoList.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
-import com.kamilkomnacki.scalableassignmenttask.pagination.ListFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.ListFooter
 import com.kamilkomnacki.scalableassignmenttask.ui.repoList.RepoListError
 import com.kamilkomnacki.scalableassignmenttask.ui.repoList.RepoListUiState
 import kotlinx.collections.immutable.persistentListOf

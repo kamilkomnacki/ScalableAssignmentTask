@@ -4,7 +4,7 @@ import com.kamilkomnacki.scalableassignmenttask.data.GitHubFailure
 import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
 import com.kamilkomnacki.scalableassignmenttask.pagination.LoadStatus
 import com.kamilkomnacki.scalableassignmenttask.pagination.PaginationState
-import com.kamilkomnacki.scalableassignmenttask.pagination.toFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.toFooter
 
 /**
  * Loaded repositories, or a finished empty list, show as [RepoListUiState.Success] with a footer for the next page.

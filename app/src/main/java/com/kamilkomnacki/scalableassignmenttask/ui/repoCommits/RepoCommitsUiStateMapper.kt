@@ -4,7 +4,7 @@ import com.kamilkomnacki.scalableassignmenttask.data.GitHubFailure
 import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
 import com.kamilkomnacki.scalableassignmenttask.pagination.LoadStatus
 import com.kamilkomnacki.scalableassignmenttask.pagination.PaginationState
-import com.kamilkomnacki.scalableassignmenttask.pagination.toFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.toFooter
 
 /**
  * Loaded commits, or a finished empty history, show as [RepoCommitsUiState.Success] with a footer for the next page.

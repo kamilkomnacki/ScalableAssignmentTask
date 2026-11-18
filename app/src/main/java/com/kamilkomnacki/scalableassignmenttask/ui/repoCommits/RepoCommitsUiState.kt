@@ -2,7 +2,7 @@ package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
 
 import androidx.compose.runtime.Immutable
 import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
-import com.kamilkomnacki.scalableassignmenttask.pagination.ListFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.pagination.ListFooter
 import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
