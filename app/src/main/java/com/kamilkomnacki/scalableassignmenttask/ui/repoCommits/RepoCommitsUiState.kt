@@ -3,9 +3,15 @@ package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
 import androidx.compose.runtime.Immutable
 import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
-data class RepoCommitsUiState(
-    val commits: ImmutableList<RepoCommit> = persistentListOf(),
-)
+sealed interface RepoCommitsUiState {
+    data object Loading : RepoCommitsUiState
+    data class Error(val error: RepoCommitsError) : RepoCommitsUiState
+    data class Success(val commits: ImmutableList<RepoCommit>) : RepoCommitsUiState
+}
+
+enum class RepoCommitsError {
+    Network,
+    Generic,
+}

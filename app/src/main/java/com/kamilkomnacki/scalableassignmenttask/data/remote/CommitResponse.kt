@@ -12,11 +12,11 @@ data class CommitResponse(
     @SerializedName("sha") val sha: String?,
     @SerializedName("commit") val commit: CommitDetailsResponse?,
 ) {
-    fun toCommit() = RepoCommit(
+    fun toRepoCommit() = RepoCommit(
         sha = sha?.takeIf { it.isNotBlank() } ?: invalidResponse(),
         title = commit?.message?.lineSequence()?.first() ?: invalidResponse(),
-        author = commit?.author?.name?.takeIf { it.isNotBlank() },
-        date = utcDate(commit?.committer?.date ?: invalidResponse()),
+        author = commit.author?.name?.takeIf { it.isNotBlank() },
+        date = utcDate(commit.committer?.date ?: invalidResponse()),
     )
 }
 
