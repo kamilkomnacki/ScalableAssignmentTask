@@ -40,8 +40,8 @@ class RepoActivity : ComponentActivity() {
                     account = ScalableApplication.ACCOUNT,
                     onRepoClick = { repo ->
                         startActivity(
-                            Intent(this, RepoCommitsActivity::class.java)
-                                .putExtra(RepoCommitsActivity.EXTRA_REPOSITORY_NAME, repo.name),
+                            Intent(this, CommitsActivity::class.java)
+                                .putExtra(CommitsActivity.EXTRA_REPOSITORY_NAME, repo.name),
                         )
                     },
                     onItemVisible = viewModel::onItemVisible,

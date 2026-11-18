@@ -2,7 +2,7 @@ package com.kamilkomnacki.scalableassignmenttask.data.remote
 
 import com.google.gson.annotations.SerializedName
 import com.kamilkomnacki.scalableassignmenttask.data.invalidResponse
-import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
+import com.kamilkomnacki.scalableassignmenttask.data.model.Commit
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
@@ -12,7 +12,7 @@ data class CommitResponse(
     @SerializedName("sha") val sha: String?,
     @SerializedName("commit") val commit: CommitDetailsResponse?,
 ) {
-    fun toRepoCommit() = RepoCommit(
+    fun toCommit() = Commit(
         sha = sha?.takeIf { it.isNotBlank() } ?: invalidResponse(),
         title = commit?.message?.lineSequence()?.first() ?: invalidResponse(),
         author = commit.author?.name?.takeIf { it.isNotBlank() },

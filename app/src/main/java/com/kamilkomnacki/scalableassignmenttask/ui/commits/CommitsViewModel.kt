@@ -1,4 +1,4 @@
-package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
+package com.kamilkomnacki.scalableassignmenttask.ui.commits
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class RepoCommitsViewModel(
+class CommitsViewModel(
     repository: GitHubRepository,
     repoName: String,
 ) : ViewModel() {
@@ -20,12 +20,12 @@ class RepoCommitsViewModel(
         loadPage = { cursor -> repository.getCommits(repoName, cursor) },
     )
 
-    val uiState: StateFlow<RepoCommitsUiState> = paginator.state
+    val uiState: StateFlow<CommitsUiState> = paginator.state
         .map { state -> state.toUiState() }
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            RepoCommitsUiState.Loading
+            CommitsUiState.Loading
         )
 
     fun onItemVisible(index: Int) = paginator.onItemVisible(index)

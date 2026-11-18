@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Scalable Capital Android Developer Assignment</string>
     <string name="repo_list_title">Repositories of %1$s</string>
-    <string name="repo_commits_title_with_name">Commits of %1$s repository</string>
+    <string name="commits_title_with_name">Commits of %1$s repository</string>
     <plurals name="repo_stars">
         <item quantity="one">%1$d star</item>
         <item quantity="other">%1$d stars</item>

@@ -1,4 +1,4 @@
-package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
+package com.kamilkomnacki.scalableassignmenttask.ui.commits
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,15 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
-import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
-import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.preview.RepoCommitRowPreviewParameterProvider
+import com.kamilkomnacki.scalableassignmenttask.data.model.Commit
+import com.kamilkomnacki.scalableassignmenttask.ui.commits.preview.CommitRowPreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun RepoCommitRow(
-    commit: RepoCommit,
+fun CommitRow(
+    commit: Commit,
     modifier: Modifier = Modifier,
 ) {
     val locale = LocalConfiguration.current.locales[0]
@@ -65,10 +65,10 @@ fun RepoCommitRow(
 
 @Preview(showBackground = true, widthDp = 360)
 @Composable
-private fun RepoCommitRowPreview(
-    @PreviewParameter(RepoCommitRowPreviewParameterProvider::class) commit: RepoCommit,
+private fun CommitRowPreview(
+    @PreviewParameter(CommitRowPreviewParameterProvider::class) commit: Commit,
 ) {
     ScalableAssignmentTaskTheme {
-        RepoCommitRow(commit = commit)
+        CommitRow(commit = commit)
     }
 }

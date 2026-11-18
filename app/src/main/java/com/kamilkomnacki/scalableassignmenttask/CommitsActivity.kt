@@ -11,22 +11,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsScreen
-import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsViewModel
+import com.kamilkomnacki.scalableassignmenttask.ui.commits.CommitsScreen
+import com.kamilkomnacki.scalableassignmenttask.ui.commits.CommitsViewModel
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableColors
 
-class RepoCommitsActivity : ComponentActivity() {
+class CommitsActivity : ComponentActivity() {
     private val repoName: String by lazy {
         requireNotNull(
             intent.getStringExtra(EXTRA_REPOSITORY_NAME)?.takeIf { it.isNotBlank() },
         ) { "Repository name is required for commits list screen." }
     }
 
-    private val viewModel: RepoCommitsViewModel by viewModels {
+    private val viewModel: CommitsViewModel by viewModels {
         viewModelFactory {
             initializer {
-                RepoCommitsViewModel(
+                CommitsViewModel(
                     repository = (application as ScalableApplication).gitHubRepository,
                     repoName = repoName,
                 )
@@ -43,7 +43,7 @@ class RepoCommitsActivity : ComponentActivity() {
         setContent {
             ScalableAssignmentTaskTheme {
                 val uiState by viewModel.uiState.collectAsState()
-                RepoCommitsScreen(
+                CommitsScreen(
                     uiState = uiState,
                     repoName = repoName,
                     onBack = { onBackPressedDispatcher.onBackPressed() },

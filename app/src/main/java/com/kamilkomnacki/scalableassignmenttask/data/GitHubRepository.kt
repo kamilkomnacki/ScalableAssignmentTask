@@ -1,8 +1,8 @@
 package com.kamilkomnacki.scalableassignmenttask.data
 
 import com.google.gson.JsonParseException
+import com.kamilkomnacki.scalableassignmenttask.data.model.Commit
 import com.kamilkomnacki.scalableassignmenttask.data.model.Repo
-import com.kamilkomnacki.scalableassignmenttask.data.model.RepoCommit
 import com.kamilkomnacki.scalableassignmenttask.data.remote.GitHubApi
 import com.kamilkomnacki.scalableassignmenttask.data.remote.isGitHubApi
 import com.kamilkomnacki.scalableassignmenttask.data.remote.nextLink
@@ -34,7 +34,7 @@ class GitHubRepository(
         return response.page { repo -> repo.toRepo() }
     }
 
-    suspend fun getCommits(repoName: String, nextUrl: String? = null): Page<RepoCommit> {
+    suspend fun getCommits(repoName: String, nextUrl: String? = null): Page<Commit> {
         if (nextUrl != null) requireGitHubApiUrl(nextUrl)
         val response = request {
             if (nextUrl == null) {
@@ -49,7 +49,7 @@ class GitHubRepository(
         if (response.code() == HTTP_CONFLICT && nextUrl == null) {
             return Page(items = emptyList(), nextCursor = null)
         }
-        return response.page { commitResponse -> commitResponse.toRepoCommit() }
+        return response.page { commitResponse -> commitResponse.toCommit() }
     }
 
     private fun requireGitHubApiUrl(nextUrl: String) {
