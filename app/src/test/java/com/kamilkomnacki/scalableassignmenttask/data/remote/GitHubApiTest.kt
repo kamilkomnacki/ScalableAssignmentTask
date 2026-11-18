@@ -19,7 +19,7 @@ class GitHubApiTest {
 
     @Test
     fun buildsCommitsRequestForAccountAndRepositoryWithCustomPageSize() {
-        val request = requestFor { it.commits("test-account", "example", perPage = 50) }
+        val request = requestFor { it.getCommits("test-account", "example", perPage = 50) }
 
         assertEquals(
             "https://api.github.com/repos/test-account/example/commits?per_page=50",
@@ -40,7 +40,7 @@ class GitHubApiTest {
     fun preservesFullCommitsNextPageUrl() {
         val nextUrl = "https://api.github.com/repositories/42/commits?per_page=50&page=3&sha=feature%2Fdetails"
 
-        val request = requestFor { it.commitsPage(nextUrl) }
+        val request = requestFor { it.getCommitsPage(nextUrl) }
 
         assertEquals(nextUrl, request.url.toString())
     }

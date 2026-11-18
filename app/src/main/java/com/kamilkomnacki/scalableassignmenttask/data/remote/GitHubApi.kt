@@ -15,7 +15,7 @@ interface GitHubApi {
     ): Response<List<RepoResponse?>>
 
     @GET("repos/{account}/{repositoryName}/commits")
-    suspend fun commits(
+    suspend fun getCommits(
         @Path("account") account: String,
         @Path("repositoryName") repoName: String,
         @Query("per_page") perPage: Int = 100,
@@ -26,5 +26,5 @@ interface GitHubApi {
     suspend fun getReposPage(@Url url: String): Response<List<RepoResponse?>>
 
     @GET
-    suspend fun commitsPage(@Url url: String): Response<List<CommitResponse?>>
+    suspend fun getCommitsPage(@Url url: String): Response<List<CommitResponse?>>
 }

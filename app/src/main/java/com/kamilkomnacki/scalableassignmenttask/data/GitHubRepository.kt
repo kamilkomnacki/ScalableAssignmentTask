@@ -38,9 +38,9 @@ class GitHubRepository(
         if (nextUrl != null) requireGitHubApiUrl(nextUrl)
         val response = request {
             if (nextUrl == null) {
-                api.commits(account, repoName)
+                api.getCommits(account, repoName)
             } else {
-                api.commitsPage(nextUrl)
+                api.getCommitsPage(nextUrl)
             }
         }
 
