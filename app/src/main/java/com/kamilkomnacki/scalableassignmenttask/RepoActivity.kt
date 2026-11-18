@@ -1,5 +1,6 @@
 package com.kamilkomnacki.scalableassignmenttask
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -26,7 +27,12 @@ class RepoActivity : ComponentActivity() {
         setContent {
             ScalableAssignmentTaskTheme {
                 val uiState by viewModel.uiState.collectAsState()
-                RepoListScreen(uiState = uiState)
+                RepoListScreen(
+                    uiState = uiState,
+                    onRepoClick = {
+                        startActivity(Intent(this, RepoCommitsActivity::class.java))
+                    },
+                )
             }
         }
     }
