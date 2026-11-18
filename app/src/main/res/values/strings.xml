@@ -12,6 +12,11 @@
     <string name="no_commits">No commits in this repository.</string>
     <string name="unknown_author">Unknown author</string>
     <string name="commit_metadata">%1$s · %2$s</string>
+    <string name="monthly_activity_title">Monthly activity</string>
+    <plurals name="monthly_commit_count">
+        <item quantity="one">%1$d commit</item>
+        <item quantity="other">%1$d commits</item>
+    </plurals>
     <string name="waiting_for_completed_month">Keep scrolling through commits to complete a month and display the chart.</string>
     <plurals name="monthly_activity_description">
         <item quantity="one">%1$s: %2$d commit</item>
@@ -22,8 +27,7 @@
     <string name="older_history_failure">Couldn\'t load older history. Please retry.</string>
     <string name="network_failure">Couldn\'t reach GitHub. Check your connection, then retry.</string>
     <string name="repo_list_failure">Couldn\'t load repositories. Please retry.</string>
-    <string name="token_rejected">GitHub rejected the configured token. Fix or remove github.token in local.properties, then rebuild and install the app.</string>
-    <string name="rate_limit_failure">GitHub\'s request limit was reached. Wait for the limit to reset before retrying. If no token is configured, add github.token=YOUR_TOKEN to local.properties, then rebuild and install the app for a higher hourly limit.</string>
+    <string name="rate_limit_failure">GitHub\'s request limit was reached. Wait for the limit to reset before retrying.</string>
     <string name="rate_limit_ready">GitHub\'s rate limit was reached. You can retry now.</string>
     <string name="rate_limit_known_wait">GitHub\'s rate limit was reached. Retry is available after %1$s.</string>
     <string name="rate_limit_local_wait">GitHub\'s rate limit was reached. The app will allow Retry after %1$s. This waiting period is app policy, not a confirmed GitHub reset.</string>

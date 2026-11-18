@@ -1,22 +1,7 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
-
-val githubTokenLiteral = providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
-    .asText
-    .map { content ->
-        Properties().apply { load(content.reader()) }.getProperty("github.token", "").trim()
-    }
-    .orElse("")
-    .map { token ->
-        "\"" + token.replace("\\", "\\\\")
-            .replace("\"", "\\\"")
-            .replace("\n", "\\n")
-            .replace("\r", "\\r") + "\""
-    }
 
 android {
     namespace = "com.kamilkomnacki.scalableassignmenttask"
@@ -32,11 +17,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField(
-            "String",
-            "GITHUB_TOKEN",
-            githubTokenLiteral.get(),
-        )
     }
 
     buildTypes {
@@ -52,7 +32,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
-        buildConfig = true
         compose = true
     }
 }

@@ -10,10 +10,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ScalableApplication : Application() {
     val gitHubRepository by lazy {
-        val authorization = BuildConfig.GITHUB_TOKEN.takeIf { it.isNotBlank() }?.let { "Bearer $it" }
         val api = Retrofit.Builder()
             .baseUrl("https://api.github.com/")
-            .callFactory(GitHubCallFactory(OkHttpClient(), authorization))
+            .callFactory(GitHubCallFactory(OkHttpClient()))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GitHubApi::class.java)

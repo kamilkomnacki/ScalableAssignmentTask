@@ -17,12 +17,6 @@ class GitHubCallFactory(
         request.newBuilder()
             .header("Accept", "application/vnd.github+json")
             .header("X-GitHub-Api-Version", "2022-11-28")
-            .apply {
-                if (authorization != null && request.url.isGitHubApi()) header(
-                    "Authorization",
-                    authorization
-                )
-            }
             .build(),
     )
 }
