@@ -18,7 +18,7 @@ import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskT
 fun RepoListScreen(
     uiState: RepoListUiState,
     modifier: Modifier = Modifier,
-    onRepoClick: (Repo) -> Unit = {},
+    onRepoClick: (RepoUiModel) -> Unit = {},
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -51,7 +51,7 @@ private fun RepoListScreenPreview() {
         RepoListScreen(
             uiState = RepoListUiState(
                 repositories = listOf(
-                    Repo(
+                    RepoUiModel(
                         id = 1L,
                         name = "kotlin",
                         owner = "JetBrains",
@@ -60,7 +60,7 @@ private fun RepoListScreenPreview() {
                         stars = 1200,
                         defaultBranch = "master",
                     ),
-                    Repo(
+                    RepoUiModel(
                         id = 2L,
                         name = "kotlinx.coroutines",
                         owner = "Kotlin",
@@ -69,7 +69,7 @@ private fun RepoListScreenPreview() {
                         stars = 850,
                         defaultBranch = "master",
                     ),
-                    Repo(
+                    RepoUiModel(
                         id = 3L,
                         name = "android-notes",
                         owner = "kamilkomnacki",

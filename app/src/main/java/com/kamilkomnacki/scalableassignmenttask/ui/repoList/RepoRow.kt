@@ -28,7 +28,7 @@ import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskT
 
 @Composable
 fun RepoRow(
-    repo: Repo,
+    repo: RepoUiModel,
     onClick: () -> Unit
 ) {
     Surface(
@@ -61,7 +61,7 @@ fun RepoRow(
 }
 
 @Composable
-private fun RepoRowDetails(repo: Repo) {
+private fun RepoRowDetails(repo: RepoUiModel) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -87,7 +87,7 @@ private fun RepoRowDetails(repo: Repo) {
 }
 
 @Composable
-private fun RepoRowStars(repo: Repo) {
+private fun RepoRowStars(repo: RepoUiModel) {
     Icon(
         painter = painterResource(android.R.drawable.star_big_on),
         contentDescription = null,
@@ -105,7 +105,7 @@ private fun RepoRowStars(repo: Repo) {
 private fun RepoRowPreview() {
     ScalableAssignmentTaskTheme {
         RepoRow(
-            repo = Repo(
+            repo = RepoUiModel(
                 id = 1L,
                 name = "ScalableAssignmentTask",
                 owner = "kamilkomnacki",

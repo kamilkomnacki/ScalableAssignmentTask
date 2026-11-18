@@ -8,7 +8,7 @@ class RepoListViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         RepoListUiState(
             repositories = listOf(
-                Repo(
+                RepoUiModel(
                     id = 1L,
                     name = "kotlin",
                     owner = "JetBrains",
@@ -17,7 +17,7 @@ class RepoListViewModel : ViewModel() {
                     stars = 1200,
                     defaultBranch = "master",
                 ),
-                Repo(
+                RepoUiModel(
                     id = 2L,
                     name = "kotlinx.coroutines",
                     owner = "Kotlin",
@@ -26,7 +26,7 @@ class RepoListViewModel : ViewModel() {
                     stars = 850,
                     defaultBranch = "master",
                 ),
-                Repo(
+                RepoUiModel(
                     id = 3L,
                     name = "compose-samples",
                     owner = "android",
@@ -35,7 +35,7 @@ class RepoListViewModel : ViewModel() {
                     stars = 640,
                     defaultBranch = "main",
                 ),
-                Repo(
+                RepoUiModel(
                     id = 4L,
                     name = "sqldelight",
                     owner = "sqldelight",
@@ -44,7 +44,7 @@ class RepoListViewModel : ViewModel() {
                     stars = 420,
                     defaultBranch = "master",
                 ),
-                Repo(
+                RepoUiModel(
                     id = 5L,
                     name = "okhttp",
                     owner = "square",
@@ -53,7 +53,7 @@ class RepoListViewModel : ViewModel() {
                     stars = 980,
                     defaultBranch = "master",
                 ),
-                Repo(
+                RepoUiModel(
                     id = 6L,
                     name = "android-notes",
                     owner = "kamilkomnacki",

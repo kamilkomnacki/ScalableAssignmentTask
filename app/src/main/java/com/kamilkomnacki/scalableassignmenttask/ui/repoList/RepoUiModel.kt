@@ -1,8 +1,8 @@
 package com.kamilkomnacki.scalableassignmenttask.ui.repoList
 
-data class RepoListUiState(val repositories: List<Repo> = emptyList())
+data class RepoListUiState(val repositories: List<RepoUiModel> = emptyList())
 
-data class Repo(
+data class RepoUiModel(
     val id: Long,
     val name: String,
     val owner: String,
@@ -12,4 +12,4 @@ data class Repo(
     val defaultBranch: String?,
 )
 
-data class RepoPage(val repositories: List<Repo>, val nextUrl: String?)
+data class RepoPage(val repositories: List<RepoUiModel>, val nextUrl: String?)
