@@ -1,13 +1,13 @@
 package com.kamilkomnacki.scalableassignmenttask.data.remote
 
-import java.io.IOException
-import kotlinx.coroutines.runBlocking
 import okhttp3.Request
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import kotlinx.coroutines.runBlocking
 
 class GitHubApiTest {
     @Test

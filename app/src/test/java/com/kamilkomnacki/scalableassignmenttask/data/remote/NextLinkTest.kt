@@ -6,7 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class LinkHeaderTest {
+class NextLinkTest {
     @Test
     fun returnsNextUrlOnFirstPage() {
         val headers = linkHeader("""<${page(2)}>; rel="next", <${page(9)}>; rel="last"""")

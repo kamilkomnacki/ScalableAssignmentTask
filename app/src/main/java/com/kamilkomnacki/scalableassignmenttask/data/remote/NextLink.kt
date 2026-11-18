@@ -24,7 +24,7 @@ private val NEXT_PAGE_LINK = Regex("""<([^>]+)>;\s*rel="next"""")
  */
 fun HttpUrl.isGitHubApi() =
     scheme == "https" &&
-            host == "api.github.com" &&
-            port == 443 &&
-            username.isEmpty() &&
-            password.isEmpty()
+        host == "api.github.com" &&
+        port == 443 &&
+        username.isEmpty() &&
+        password.isEmpty()

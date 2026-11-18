@@ -7,11 +7,11 @@ import com.kamilkomnacki.scalableassignmenttask.data.remote.GitHubApi
 import com.kamilkomnacki.scalableassignmenttask.data.remote.isGitHubApi
 import com.kamilkomnacki.scalableassignmenttask.data.remote.nextLink
 import com.kamilkomnacki.scalableassignmenttask.pagination.Page
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import retrofit2.Response
 import java.io.IOException
 import java.net.HttpURLConnection.HTTP_CONFLICT
 import java.net.HttpURLConnection.HTTP_FORBIDDEN
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import retrofit2.Response
 
 /**
  * Loads GitHub lists one page at a time. A null `nextUrl` loads the first page; otherwise it is
@@ -71,7 +71,7 @@ class GitHubRepository(
     private fun <T, R> Response<List<T?>>.page(map: (T) -> R): Page<R> =
         Page(
             items = items(map),
-            nextCursor = nextLink(headers())
+            nextCursor = nextLink(headers()),
         )
 
     private fun <T, R> Response<List<T?>>.items(map: (T) -> R): List<R> {
