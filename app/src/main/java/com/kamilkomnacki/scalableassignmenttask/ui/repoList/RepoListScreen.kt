@@ -77,6 +77,7 @@ fun RepoListScreen(
                     message = stringResource(uiState.error.messageRes()),
                     onRetryClick = onRetryClick,
                 )
+
                 is RepoListUiState.Success -> RepoListContent(
                     uiState = uiState,
                     onRepoClick = onRepoClick,
@@ -123,7 +124,10 @@ private fun RepoListContent(
     }
 }
 
-private fun LazyListScope.footerItem(footer: ListFooter<RepoListError>, onRetryClick: () -> Unit) {
+private fun LazyListScope.footerItem(
+    footer: ListFooter<RepoListError>,
+    onRetryClick: () -> Unit
+) {
     when (footer) {
         ListFooter.None -> Unit
         ListFooter.Loading -> item(key = FOOTER_KEY) { LoadingFooter() }
