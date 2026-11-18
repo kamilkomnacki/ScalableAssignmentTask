@@ -6,11 +6,11 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.graphics.toArgb
-import com.kamilkomnacki.scalableassignmenttask.ui.repositories.RepositoriesScreen
+import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.RepoCommitsScreen
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableColors
 
-class RepositoriesActivity : ComponentActivity() {
+class RepoCommitsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
@@ -19,7 +19,7 @@ class RepositoriesActivity : ComponentActivity() {
         )
         setContent {
             ScalableAssignmentTaskTheme {
-                RepositoriesScreen()
+                RepoCommitsScreen()
             }
         }
     }

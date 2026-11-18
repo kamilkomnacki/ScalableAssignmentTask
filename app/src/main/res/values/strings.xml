@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Scalable Capital Android Developer Assignment</string>
-    <string name="repositories_title">%1$s / Repositories</string>
-    <plurals name="repository_stars">
+    <string name="repo_list_title">%1$s / Repositories</string>
+    <plurals name="repo_stars">
         <item quantity="one">%1$d star</item>
         <item quantity="other">%1$d stars</item>
     </plurals>
-    <string name="no_public_repositories">No public repositories</string>
+    <string name="no_public_repos">No public repositories</string>
     <string name="retry">Retry</string>
     <string name="back">Back</string>
     <string name="no_commits">No commits in this repository.</string>
@@ -21,7 +21,7 @@
     <string name="loading_older_history">Loading older history…</string>
     <string name="older_history_failure">Couldn\'t load older history. Please retry.</string>
     <string name="network_failure">Couldn\'t reach GitHub. Check your connection, then retry.</string>
-    <string name="repositories_failure">Couldn\'t load repositories. Please retry.</string>
+    <string name="repo_list_failure">Couldn\'t load repositories. Please retry.</string>
     <string name="token_rejected">GitHub rejected the configured token. Fix or remove github.token in local.properties, then rebuild and install the app.</string>
     <string name="rate_limit_ready">GitHub\'s rate limit was reached. You can retry now.</string>
     <string name="rate_limit_known_wait">GitHub\'s rate limit was reached. Retry is available after %1$s.</string>

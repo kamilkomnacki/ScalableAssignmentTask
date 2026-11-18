@@ -1,4 +1,4 @@
-package com.kamilkomnacki.scalableassignmenttask.ui.repositorycommits
+package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun RepositoryCommitsScreen(modifier: Modifier = Modifier) {
+fun RepoCommitsScreen(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
