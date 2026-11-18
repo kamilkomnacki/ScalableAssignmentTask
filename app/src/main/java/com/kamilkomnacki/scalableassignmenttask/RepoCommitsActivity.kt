@@ -17,7 +17,7 @@ import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskT
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableColors
 
 class RepoCommitsActivity : ComponentActivity() {
-    private val repositoryName: String by lazy {
+    private val repoName: String by lazy {
         requireNotNull(
             intent.getStringExtra(EXTRA_REPOSITORY_NAME)?.takeIf { it.isNotBlank() },
         ) { "Repository name is required for commits list screen." }
@@ -28,7 +28,7 @@ class RepoCommitsActivity : ComponentActivity() {
             initializer {
                 RepoCommitsViewModel(
                     repository = (application as ScalableApplication).gitHubRepository,
-                    repositoryName = repositoryName,
+                    repoName = repoName,
                 )
             }
         }
@@ -45,9 +45,10 @@ class RepoCommitsActivity : ComponentActivity() {
                 val uiState by viewModel.uiState.collectAsState()
                 RepoCommitsScreen(
                     uiState = uiState,
-                    repositoryName = repositoryName,
+                    repoName = repoName,
                     onBack = { onBackPressedDispatcher.onBackPressed() },
-                    onRetryClick = viewModel::loadCommits,
+                    onRetryClick = viewModel::retry,
+                    onItemVisible = viewModel::onItemVisible,
                 )
             }
         }

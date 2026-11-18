@@ -7,5 +7,3 @@ data class Repo(
     val technology: String?,
     val stars: Int,
 )
-
-data class RepoPage(val repositories: List<Repo>, val nextUrl: String?)

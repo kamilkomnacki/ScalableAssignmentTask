@@ -1,14 +1,16 @@
 package com.kamilkomnacki.scalableassignmenttask.ui.repoCommits
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,22 +25,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamilkomnacki.scalableassignmenttask.R
+import com.kamilkomnacki.scalableassignmenttask.pagination.LastVisibleItemEffect
+import com.kamilkomnacki.scalableassignmenttask.pagination.ListFooter
+import com.kamilkomnacki.scalableassignmenttask.ui.components.ErrorWithRetry
+import com.kamilkomnacki.scalableassignmenttask.ui.components.LoadingFooter
 import com.kamilkomnacki.scalableassignmenttask.ui.repoCommits.preview.RepoCommitsPreviewParameterProvider
 import com.kamilkomnacki.scalableassignmenttask.ui.theme.ScalableAssignmentTaskTheme
+
+private const val FOOTER_KEY = "footer"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepoCommitsScreen(
     uiState: RepoCommitsUiState,
-    repositoryName: String,
+    repoName: String,
     onBack: () -> Unit,
     onRetryClick: () -> Unit,
+    onItemVisible: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -46,7 +54,7 @@ fun RepoCommitsScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { TopBarTitle(repositoryName) },
+                title = { TopBarTitle(repoName) },
                 navigationIcon = { BackIcon(onBack) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
@@ -62,17 +70,24 @@ fun RepoCommitsScreen(
         ) {
             when (uiState) {
                 RepoCommitsUiState.Loading -> CircularProgressIndicator()
-                is RepoCommitsUiState.Error -> RepoCommitsErrorPanel(uiState, onRetryClick)
-                is RepoCommitsUiState.Success -> RepoCommitsListContent(uiState)
+                is RepoCommitsUiState.Error -> ErrorWithRetry(
+                    message = stringResource(uiState.error.messageRes()),
+                    onRetryClick = onRetryClick,
+                )
+                is RepoCommitsUiState.Success -> RepoCommitsListContent(
+                    uiState = uiState,
+                    onRetryClick = onRetryClick,
+                    onItemVisible = onItemVisible,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun TopBarTitle(repositoryName: String) {
+private fun TopBarTitle(repoName: String) {
     Text(
-        text = stringResource(R.string.repo_commits_title_with_name, repositoryName),
+        text = stringResource(R.string.repo_commits_title_with_name, repoName),
         maxLines = 3,
         overflow = TextOverflow.Ellipsis,
     )
@@ -89,14 +104,21 @@ private fun BackIcon(onBack: () -> Unit) {
 }
 
 @Composable
-private fun RepoCommitsListContent(uiState: RepoCommitsUiState.Success) {
+private fun RepoCommitsListContent(
+    uiState: RepoCommitsUiState.Success,
+    onRetryClick: () -> Unit,
+    onItemVisible: (Int) -> Unit,
+) {
     if (uiState.commits.isEmpty()) {
         Text(
             text = stringResource(R.string.no_commits),
             modifier = Modifier.padding(16.dp),
         )
     } else {
+        val listState = rememberLazyListState()
+        LastVisibleItemEffect(listState, uiState.commits.size, onItemVisible)
         LazyColumn(
+            state = listState,
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -107,35 +129,39 @@ private fun RepoCommitsListContent(uiState: RepoCommitsUiState.Success) {
             ) { commit ->
                 RepoCommitRow(commit = commit)
             }
+            footerItem(uiState.footer, onRetryClick)
         }
     }
 }
 
-@Composable
-private fun RepoCommitsErrorPanel(
-    uiState: RepoCommitsUiState.Error,
-    onRetryClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(
-            text = stringResource(
-                when (uiState.error) {
-                    RepoCommitsError.Network -> R.string.network_failure
-                    RepoCommitsError.RateLimited -> R.string.rate_limit_failure
-                    RepoCommitsError.TokenRejected -> R.string.token_rejected
-                    RepoCommitsError.Generic -> R.string.commits_failure
-                },
-            ),
-            textAlign = TextAlign.Center,
-        )
-        Button(onClick = onRetryClick) {
-            Text(stringResource(R.string.retry))
+private fun LazyListScope.footerItem(footer: ListFooter<RepoCommitsError>, onRetryClick: () -> Unit) {
+    when (footer) {
+        ListFooter.None -> Unit
+        ListFooter.Loading -> item(key = FOOTER_KEY) { LoadingFooter() }
+        is ListFooter.Error -> item(key = FOOTER_KEY) {
+            ErrorWithRetry(
+                message = stringResource(footer.error.olderHistoryMessageRes()),
+                onRetryClick = onRetryClick,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
+}
+
+/** Shown on the whole screen when no commits are loaded yet. */
+@StringRes
+private fun RepoCommitsError.messageRes(): Int = when (this) {
+    RepoCommitsError.Network -> R.string.network_failure
+    RepoCommitsError.RateLimited -> R.string.rate_limit_failure
+    RepoCommitsError.Generic -> R.string.commits_failure
+}
+
+/** Shown below the loaded commits when an older page fails. */
+@StringRes
+private fun RepoCommitsError.olderHistoryMessageRes(): Int = when (this) {
+    RepoCommitsError.Network -> R.string.network_failure
+    RepoCommitsError.RateLimited -> R.string.rate_limit_failure
+    RepoCommitsError.Generic -> R.string.older_history_failure
 }
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 720)
@@ -146,9 +172,10 @@ private fun RepoCommitsScreenPreview(
     ScalableAssignmentTaskTheme {
         RepoCommitsScreen(
             uiState = uiState,
-            repositoryName = RepoCommitsPreviewParameterProvider.REPOSITORY_NAME,
+            repoName = RepoCommitsPreviewParameterProvider.REPOSITORY_NAME,
             onBack = {},
             onRetryClick = {},
+            onItemVisible = {},
         )
     }
 }

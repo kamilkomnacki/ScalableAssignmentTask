@@ -44,7 +44,8 @@ class RepoActivity : ComponentActivity() {
                                 .putExtra(RepoCommitsActivity.EXTRA_REPOSITORY_NAME, repo.name),
                         )
                     },
-                    onRetryClick = viewModel::loadRepositories,
+                    onItemVisible = viewModel::onItemVisible,
+                    onRetryClick = viewModel::retry,
                 )
             }
         }

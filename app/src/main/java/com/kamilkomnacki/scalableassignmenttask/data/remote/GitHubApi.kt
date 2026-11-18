@@ -7,7 +7,8 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface GitHubApi {
-    @GET("users/{account}/repos")
+    // Explicit sorting keeps the order stable between pages; GitHub carries it into the next links.
+    @GET("users/{account}/repos?sort=full_name&direction=asc")
     suspend fun getRepos(
         @Path("account") account: String,
         @Query("per_page") perPage: Int = 100,
@@ -16,7 +17,7 @@ interface GitHubApi {
     @GET("repos/{account}/{repositoryName}/commits")
     suspend fun commits(
         @Path("account") account: String,
-        @Path("repositoryName") repositoryName: String,
+        @Path("repositoryName") repoName: String,
         @Query("per_page") perPage: Int = 100,
     ): Response<List<CommitResponse?>>
 

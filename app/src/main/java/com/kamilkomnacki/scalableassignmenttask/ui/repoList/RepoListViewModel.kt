@@ -2,45 +2,26 @@ package com.kamilkomnacki.scalableassignmenttask.ui.repoList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kamilkomnacki.scalableassignmenttask.data.GitHubFailure
 import com.kamilkomnacki.scalableassignmenttask.data.GitHubRepository
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.kamilkomnacki.scalableassignmenttask.pagination.Paginator
+import com.kamilkomnacki.scalableassignmenttask.ui.PREFETCH_DISTANCE
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
-class RepoListViewModel(
-    private val repository: GitHubRepository,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow<RepoListUiState>(RepoListUiState.Loading)
-    val uiState: StateFlow<RepoListUiState> = _uiState.asStateFlow()
+class RepoListViewModel(repository: GitHubRepository) : ViewModel() {
+    private val paginator = Paginator(
+        scope = viewModelScope,
+        prefetchDistance = PREFETCH_DISTANCE,
+        loadPage = repository::getRepos,
+    )
 
-    private var loadJob: Job? = null
+    val uiState: StateFlow<RepoListUiState> = paginator.state
+        .map { state -> state.toUiState() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, RepoListUiState.Loading)
 
-    init {
-        loadRepositories()
-    }
+    fun onItemVisible(index: Int) = paginator.onItemVisible(index)
 
-    fun loadRepositories() {
-        if (loadJob?.isActive == true) return
-        _uiState.value = RepoListUiState.Loading
-
-        loadJob = viewModelScope.launch {
-            _uiState.value = try {
-                RepoListUiState.Success(repository.getRepos().toImmutableList())
-            } catch (failure: GitHubFailure) {
-                RepoListUiState.Error(failure.toRepoListError())
-            }
-        }
-    }
-}
-
-private fun GitHubFailure.toRepoListError(): RepoListError = when (this) {
-    is GitHubFailure.Network -> RepoListError.Network
-    is GitHubFailure.RateLimited -> RepoListError.RateLimited
-    is GitHubFailure.TokenRejected -> RepoListError.TokenRejected
-    is GitHubFailure.Unavailable,
-    is GitHubFailure.InvalidResponse -> RepoListError.Generic
+    fun retry() = paginator.retry()
 }
