@@ -10,11 +10,10 @@ import retrofit2.Response
 
 class GitHubRepository(
     private val api: GitHubApi,
-    private val reposUrl: String,
-    private val commitsUrl: (repositoryName: String) -> String,
+    private val account: String,
 ) {
     suspend fun getRepos(): List<Repo> {
-        val response = request { api.getRepos(reposUrl) }
+        val response = request { api.getRepos(account) }
 
         if (!response.isSuccessful) {
             throw GitHubFailure.Unavailable()
@@ -24,7 +23,7 @@ class GitHubRepository(
     }
 
     suspend fun getCommits(repoName: String): List<RepoCommit> {
-        val response = request { api.commits(commitsUrl(repoName)) }
+        val response = request { api.commits(account, repoName) }
 
         // GitHub answers 409 Conflict instead of an empty list for a repository without commits: https://github.com/github/rest-api-description/issues/385
         if (response.code() == HTTP_CONFLICT) {

@@ -19,8 +19,7 @@ class ScalableApplication : Application() {
 
         GitHubRepository(
             api = api,
-            reposUrl = "users/$ACCOUNT/repos?per_page=100",
-            commitsUrl = { repositoryName -> "repos/$ACCOUNT/$repositoryName/commits?per_page=100" },
+            account = ACCOUNT,
         )
     }
 
